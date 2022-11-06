@@ -1,7 +1,3 @@
-let productoSelec = parseInt(prompt('Que producto desea 1.Remera 2.Pantalon 3.Buzo 4.Zapatilla'));
-let seguirComprando = true;
-let compraTotal = 0;
-let decision;
 const productArray = [];
 const carrito = [];
 
@@ -14,19 +10,6 @@ class ProductoNuevo {
     }
 }
 
-while (seguirComprando === true) {
-    const producto = productArray.find((producto) => productArray.id === productoSelec);
-    if (producto) {
-        carrito.push(producto);
-    }
-    decision = parseInt(prompt('Quiere seguir comprando? 1.Si 2.No '));
-    if (decision === 1) {
-        productoSelec = parseInt(prompt('Que producto desea 1.Remera 2.Pantalon 3.Buzo 4.Zapatilla'));
-    } else {
-        seguirComprando = false
-    }
-}
-
 const remera = new ProductoNuevo(1, 'Nike', 2500, 'S');
 productArray.push(remera);
 const pantalon = new ProductoNuevo(2, 'Adidas', 4600, 'M');
@@ -36,23 +19,28 @@ productArray.push(buzo);
 const zapatilla = new ProductoNuevo(4, 'Puma', 10300, 'L');
 productArray.push(zapatilla);
 
-compraTotal = carrito.map(producto => producto.price).reduce((a, b) => a + b)
-console.log(carrito);
-console.log(compraTotal);
+const selecProducto = document.querySelector('.lista');
 
-//alert(`El total es de ${compraTotal}`);
+productArray.forEach((elemento) => {
+    const opcionProd = document.createElement('option');
+    opcionProd.innerHTML = `${elemento.name}: $${elemento.price}`;
+    opcionProd.setAttribute('id', `${elemento.id}`);
+    selecProducto.append(opcionProd);
+});
 
-function descuento() {
-    let descuento = 0;
-    if (compraTotal >= 1000) {
-        descuento = 10;
-    }
+const botonIngresar = document.querySelector('.botonIngresar');
+const botonFinalizar = document.querySelector('.finalizarCompra');
 
-    let valorDescuento = compraTotal * (descuento / 100);
-    let valorFinal = compraTotal - valorDescuento;
-    return valorFinal;
+botonIngresar.onclick = () => {
+    const indexProd = selecProducto.selectedIndex;
+    const productoSeleccionado = productArray[indexProd];
+    carrito.push(productoSeleccionado); 
 }
 
-const totalCompraConDescuento = descuento(compraTotal);
-
-final = alert(`el total de su compra es ${totalCompraConDescuento}`);
+botonFinalizar.onclick = () => {
+    let total = 0 
+    carrito.forEach((prod) => {
+        total = total + prod.price
+    })
+    alert (`Tenes en tu carrito ${carrito.length} productos. El total es de ${total}`)
+}
