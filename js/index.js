@@ -23,7 +23,7 @@ const selecProducto = document.querySelector('.lista');
 
 productArray.forEach((elemento) => {
     const opcionProd = document.createElement('option');
-    opcionProd.innerHTML = `${elemento.name}: $${elemento.price}`;
+    opcionProd.innerText = `${elemento.name}: $${elemento.price}`;
     opcionProd.setAttribute('id', `${elemento.id}`);
     selecProducto.append(opcionProd);
 });
